@@ -20,6 +20,18 @@ interface PageContent {
   excerpt: string;
 }
 
+// Helper function to get consistent headers for HTML requests
+function getHtmlRequestHeaders(): HeadersInit {
+  return {
+    'User-Agent': 'Mozilla/5.0 (compatible; AWS-Epubify/1.0)',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Cache-Control': 'no-cache',
+    'Pragma': 'no-cache',
+  };
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body: ConversionRequest = await request.json();
@@ -146,13 +158,17 @@ async function convertToEpub(taskId: string, url: string, title?: string): Promi
 
 async function extractAwsDocumentationLinks(url: string): Promise<string[]> {
   const response = await fetch(url, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (compatible; AWS-Epubify/1.0)',
-    },
+    headers: getHtmlRequestHeaders(),
   });
   
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}: ${response.status}`);
+  }
+
+  // Check if we're getting HTML content (not RSS/XML)
+  const contentType = response.headers.get('content-type') || '';
+  if (contentType.includes('xml') && !contentType.includes('html')) {
+    console.warn(`Received XML/RSS content instead of HTML for ${url}. Content-Type: ${contentType}`);
   }
   
   const html = await response.text();
@@ -283,13 +299,19 @@ function isValidAwsDocumentationLink(url: string): boolean {
 async function processPageWithReadability(url: string): Promise<PageContent | null> {
   try {
     const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; AWS-Epubify/1.0)',
-      },
+      headers: getHtmlRequestHeaders(),
     });
     
     if (!response.ok) {
       throw new Error(`Failed to fetch ${url}: ${response.status}`);
+    }
+
+    // Check if we're getting HTML content (not RSS/XML)
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('xml') && !contentType.includes('html')) {
+      console.warn(`Received XML/RSS content instead of HTML for ${url}. Content-Type: ${contentType}`);
+      // Skip processing RSS/XML content
+      return null;
     }
     
     const html = await response.text();
