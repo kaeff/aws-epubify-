@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "functions": {
+    "app/api/convert/route.js": {
+      "maxDuration": 300
+    },
+    "app/api/status/*/route.js": {
+      "maxDuration": 30
+    },
+    "app/api/download/*/route.js": {
+      "maxDuration": 60
+    }
+  }
+}
