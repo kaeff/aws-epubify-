@@ -1,223 +1,197 @@
 # AWS Epubify
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyour-username%2Faws-epubify)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-A modern web application that converts AWS documentation to EPUB format for offline reading. Simply provide a link to the documentation index page, and the application will generate a comprehensive EPUB file containing all subpages as chapters with embedded images.
-
-![AWS Epubify Screenshot](https://via.placeholder.com/800x600/232F3E/FFFFFF?text=AWS+Epubify+Screenshot)
+Convert AWS documentation to EPUB format for offline reading.
 
 ## 🚀 Features
 
-- **Easy Conversion**: Just paste the AWS documentation URL and get your EPUB
-- **Complete Coverage**: Automatically extracts all subpages as chapters
-- **Embedded Images**: All images are embedded in the EPUB file
-- **Real-time Progress**: Live progress tracking during conversion
-- **Modern UI**: Clean, responsive design with AWS-inspired styling
-- **Background Processing**: Celery-powered background workers for efficient processing
-- **RESTful API**: FastAPI backend with comprehensive API documentation
+- **Web-based Interface**: Clean, modern UI built with Next.js and Tailwind CSS
+- **Real-time Progress**: Live updates on conversion progress
+- **Smart Content Extraction**: Automatically discovers and processes documentation pages
+- **EPUB Generation**: Creates properly formatted EPUB files with table of contents
+- **Serverless Architecture**: Fully serverless, running on Vercel
+- **No Dependencies**: No need for external services like Redis or databases
 
-## 🛠️ Tech Stack
+## 🏗️ Architecture
 
-### Frontend
-- **Next.js 14** - React framework with App Router
-- **TypeScript** - Type-safe JavaScript
-- **Tailwind CSS** - Utility-first CSS framework
-- **Lucide React** - Beautiful icons
-- **Vercel** - Deployment platform
+This application runs entirely on **Vercel** using Next.js:
 
-### Backend
-- **FastAPI** - High-performance Python web framework
-- **Celery** - Distributed task queue
-- **Redis** - In-memory data store for queuing
-- **BeautifulSoup** - HTML parsing
-- **Requests** - HTTP library
-- **EbookLib** - EPUB generation
+- **Frontend**: Next.js 14 with React and Tailwind CSS
+- **Backend**: Next.js API routes (serverless functions)
+- **Processing**: Web scraping and EPUB generation in serverless functions
+- **Storage**: In-memory task storage (upgradeable to Vercel KV for production)
+- **Deployment**: Vercel with automatic deployments
 
-### Infrastructure
-- **Docker** - Containerization
-- **GitHub Actions** - CI/CD pipeline
-- **Railway/Render** - Backend deployment options
+## �️ Technology Stack
 
-## 📋 Prerequisites
+- **Framework**: Next.js 14
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Web Scraping**: Cheerio
+- **EPUB Generation**: JSZip
+- **Deployment**: Vercel
+- **Package Manager**: npm
 
-- **Node.js** 18+ and npm
-- **Python** 3.11+
-- **Docker** and Docker Compose (for local development)
-- **Redis** (for background task processing)
+## 📦 Installation
 
-## 🏃 Quick Start
-
-### Option 1: Using Setup Script (Recommended)
-
-```bash
-# Clone the repository
-git clone https://github.com/your-username/aws-epubify.git
-cd aws-epubify
-
-# Run the setup script
-./setup.sh
-```
-
-The setup script will:
-- Install all dependencies
-- Set up environment variables
-- Start all services with Docker Compose
-- Open the application at http://localhost:3000
-
-### Option 2: Manual Setup
-
-1. **Clone and Install Dependencies**
+1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/aws-epubify.git
+   git clone <repository-url>
    cd aws-epubify
+   ```
+
+2. **Install dependencies**:
+   ```bash
    npm install
    ```
 
-2. **Set Up Environment Variables**
+3. **Run development server**:
    ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
+   npm run dev
    ```
 
-3. **Start with Docker Compose**
+4. **Open your browser** and navigate to `http://localhost:3000`
+
+## 🚀 Deployment
+
+### Deploy to Vercel
+
+1. **Connect to Vercel**:
+   - Push your code to GitHub/GitLab/Bitbucket
+   - Import the project in Vercel
+   - Deploy automatically
+
+2. **Or use Vercel CLI**:
    ```bash
-   docker-compose up --build
+   npm install -g vercel
+   vercel
    ```
 
-4. **Access the Application**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8000
-   - API Documentation: http://localhost:8000/docs
-
-## 🌐 Deployment
-
-### Vercel (Frontend)
-
-1. **Connect GitHub Repository**
-   - Import your repository on [Vercel](https://vercel.com)
-   - Set environment variables:
-     ```
-     BACKEND_URL=https://your-backend-url.com
-     NODE_ENV=production
-     ```
-
-2. **Deploy**
-   - Push to main branch triggers automatic deployment
-   - Or deploy manually through Vercel dashboard
-
-### Railway (Backend)
-
-1. **Deploy Services**
-   - **Redis**: Add from Railway templates
-   - **Backend API**: Deploy from `/backend` folder
-   - **Worker**: Deploy another instance as Celery worker
-
-2. **Configure Environment Variables**
-   ```
-   REDIS_HOST=redis-service-url
-   CELERY_BROKER_URL=redis://redis-service-url:6379/0
-   CELERY_RESULT_BACKEND=redis://redis-service-url:6379/0
-   ```
-
-For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
-
-## 🔧 API Documentation
-
-The backend provides a comprehensive REST API:
-
-- `POST /convert` - Start EPUB conversion
-- `GET /status/{task_id}` - Check conversion status
-- `GET /download/{task_id}` - Download completed EPUB
-- `DELETE /task/{task_id}` - Delete conversion task
-- `GET /health` - Health check endpoint
-
-Visit `/docs` on your backend URL for interactive API documentation.
+The app will automatically deploy with the correct serverless function configuration.
 
 ## 📚 Usage
 
-1. **Enter Documentation URL**
-   - Navigate to the AWS documentation section you want to convert
-   - Copy the URL of the main index or table of contents page
-   - Examples:
-     - `https://docs.aws.amazon.com/s3/latest/userguide/`
-     - `https://docs.aws.amazon.com/ec2/latest/userguide/`
-     - `https://docs.aws.amazon.com/lambda/latest/dg/`
+1. **Enter Documentation URL**: Paste the URL of an AWS documentation index page
+2. **Optional Title**: Provide a custom title for your EPUB
+3. **Convert**: Click "Convert to EPUB" and wait for processing
+4. **Download**: Download your EPUB file when conversion is complete
 
-2. **Start Conversion**
-   - Paste the URL in the application
-   - Optionally provide a custom title
-   - Click "Convert to EPUB"
+### Example URLs
+- `https://docs.aws.amazon.com/s3/latest/userguide/`
+- `https://docs.aws.amazon.com/ec2/latest/userguide/`
+- `https://docs.aws.amazon.com/lambda/latest/dg/`
 
-3. **Monitor Progress**
-   - Watch real-time progress updates
-   - See detailed status messages
-   - Progress bar shows completion percentage
+## ⚙️ Configuration
 
-4. **Download EPUB**
-   - Download button appears when conversion is complete
-   - EPUB file includes all chapters and embedded images
+### Vercel Function Timeouts
 
-## 🧪 Development
+The `vercel.json` configuration includes:
+- **Convert endpoint**: 300 seconds (5 minutes) for processing
+- **Status endpoint**: 30 seconds for quick status checks
+- **Download endpoint**: 60 seconds for file delivery
 
-### Running Tests
+### Environment Variables
 
-```bash
-# Frontend tests
-npm test
+No environment variables are required for basic functionality. For production use with larger documentation sets, consider:
 
-# Backend tests
-cd backend
-pytest
-```
+- **Vercel KV**: For persistent task storage
+- **Vercel Blob**: For file storage
+- **Custom timeout limits**: Based on your documentation size
 
-### Project Structure
+## 📁 Project Structure
 
 ```
-aws-epubify/
-├── app/                    # Next.js app directory
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout
-│   └── page.tsx           # Main page component
-├── backend/               # FastAPI backend
-│   ├── main.py           # Main application
-│   ├── celery_worker.py  # Celery worker
-│   ├── requirements.txt  # Python dependencies
-│   └── Dockerfile        # Backend Docker image
-├── .github/workflows/    # GitHub Actions
-├── docker-compose.yml    # Local development
-├── vercel.json          # Vercel configuration
-└── DEPLOYMENT.md        # Deployment guide
+├── app/
+│   ├── api/
+│   │   ├── convert/
+│   │   │   └── route.ts          # Conversion endpoint
+│   │   ├── status/
+│   │   │   └── [taskId]/
+│   │   │       └── route.ts      # Status checking
+│   │   └── download/
+│   │       └── [taskId]/
+│   │           └── route.ts      # File download
+│   ├── globals.css               # Global styles
+│   ├── layout.tsx                # Root layout
+│   └── page.tsx                  # Main application
+├── public/                       # Static assets
+├── vercel.json                   # Vercel configuration
+├── package.json                  # Dependencies
+├── tailwind.config.js           # Tailwind configuration
+└── tsconfig.json                # TypeScript configuration
 ```
 
-## 🔍 Troubleshooting
+## 🔧 API Endpoints
 
-### Common Issues
+### POST `/api/convert`
+Start a new conversion job.
 
-1. **CORS Errors**
-   - Ensure `BACKEND_URL` is correctly set
-   - Check CORS middleware configuration
+**Request**:
+```json
+{
+  "url": "https://docs.aws.amazon.com/s3/latest/userguide/",
+  "title": "AWS S3 User Guide" // optional
+}
+```
 
-2. **Conversion Failures**
-   - Verify the URL is accessible
-   - Check worker logs for specific errors
-   - Ensure Redis is running
+**Response**:
+```json
+{
+  "task_id": "uuid-here",
+  "message": "Conversion started"
+}
+```
 
-3. **Build Failures**
-   - Check Node.js version compatibility
-   - Clear `node_modules` and reinstall dependencies
+### GET `/api/status/[taskId]`
+Check conversion status.
 
-For more troubleshooting tips, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md) and [DEPLOYMENT.md](DEPLOYMENT.md).
+**Response**:
+```json
+{
+  "task_id": "uuid-here",
+  "status": "processing", // pending, processing, completed, failed
+  "progress": 45,
+  "message": "Processing page 10/20...",
+  "download_url": "/api/download/uuid-here" // when completed
+}
+```
 
-## 🤝 Contributing
+### GET `/api/download/[taskId]`
+Download the generated EPUB file.
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+**Response**: EPUB file download
+
+## 🎯 Performance Considerations
+
+- **Page Limit**: Limited to 50 pages per conversion for optimal performance
+- **Timeout Handling**: 5-minute timeout for conversion processes
+- **Memory Management**: Efficient streaming and chunked processing
+- **Caching**: Static assets cached by Vercel's CDN
+
+## 🛡️ Error Handling
+
+- **Invalid URLs**: Validates AWS documentation URLs
+- **Network Timeouts**: Graceful handling of slow responses
+- **Processing Failures**: Detailed error messages and status updates
+- **Resource Limits**: Automatic fallbacks for large documentation sets
+
+## 🔄 Upgrading to Production
+
+For production use with high traffic or large documentation sets:
+
+1. **Add Vercel KV** for persistent task storage
+2. **Use Vercel Blob** for file storage
+3. **Implement rate limiting**
+4. **Add authentication** if needed
+5. **Monitor function usage** and optimize timeouts
+
+## 📝 Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit changes: `git commit -am 'Add feature'`
+4. Push to branch: `git push origin feature-name`
+5. Submit a pull request
+>>>>>>> a00ed8a (🚀 Complete Next.js Serverless Rearchitecture for Vercel)
 
 ## 📄 License
 
@@ -225,20 +199,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- [PyWebDoc2Epub](https://github.com/brignoni/py-webdoc-2-ebook) - Core conversion library
-- [AWS Documentation](https://docs.aws.amazon.com/) - Source of documentation
-- [Vercel](https://vercel.com/) - Frontend deployment platform
-- [Railway](https://railway.app/) - Backend deployment platform
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-
-1. Check the [Troubleshooting Guide](TROUBLESHOOTING.md) for common solutions
-2. Review the [Issues](https://github.com/your-username/aws-epubify/issues) page
-3. Check the [Deployment Guide](DEPLOYMENT.md) for deployment-specific issues
-4. Create a new issue with detailed information if the problem persists
-
----
-
-Made with ❤️ for the AWS community
+- AWS for providing comprehensive documentation
+- Vercel for serverless hosting platform
+- Next.js team for the excellent framework
+- Contributors and community feedback
