@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 interface TaskInfo {
   task_id: string;
   url: string;
