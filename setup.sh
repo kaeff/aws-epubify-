@@ -26,7 +26,12 @@ mkdir -p backend/output
 
 # Install Node.js dependencies
 echo "📦 Installing Node.js dependencies..."
-npm install
+if [ ! -f package-lock.json ]; then
+    echo "📝 Generating package-lock.json..."
+    npm install
+else
+    npm ci
+fi
 
 # Build and start services
 echo "🐳 Building and starting Docker services..."

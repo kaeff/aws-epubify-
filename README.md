@@ -207,7 +207,7 @@ aws-epubify/
    - Check Node.js version compatibility
    - Clear `node_modules` and reinstall dependencies
 
-For more troubleshooting tips, see [DEPLOYMENT.md](DEPLOYMENT.md).
+For more troubleshooting tips, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md) and [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## 🤝 Contributing
 
@@ -234,9 +234,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues or have questions:
 
-1. Check the [Issues](https://github.com/your-username/aws-epubify/issues) page
-2. Review the [Deployment Guide](DEPLOYMENT.md)
-3. Create a new issue with detailed information
+1. Check the [Troubleshooting Guide](TROUBLESHOOTING.md) for common solutions
+2. Review the [Issues](https://github.com/your-username/aws-epubify/issues) page
+3. Check the [Deployment Guide](DEPLOYMENT.md) for deployment-specific issues
+4. Create a new issue with detailed information if the problem persists
 
 ---
 
