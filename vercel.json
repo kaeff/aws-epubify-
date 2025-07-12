@@ -8,10 +8,5 @@
   ],
   "env": {
     "BACKEND_URL": "@backend_url"
-  },
-  "functions": {
-    "app/api/*/route.js": {
-      "maxDuration": 30
-    }
   }
 }
