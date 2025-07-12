@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "env": {
+    "BACKEND_URL": "@backend_url"
+  },
+  "functions": {
+    "app/api/*/route.js": {
+      "maxDuration": 30
+    }
+  }
+}
